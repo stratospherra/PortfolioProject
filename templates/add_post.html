@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'CSS/css.css' %}">
+    <title>Document</title>
+</head>
+<body>
+<div class="header">
+    <nav class="navigation">
+        <a href="{% url 'index' %}">Home</a>
+        {% if user.is_authenticated %}
+        <a href="{% url 'profile' user.pk %}">Profile: {{ user.first_name }} {{ user.last_name }}</a>
+        <a href="{% url 'logout' %}">Sign out</a>
+
+        {% else %}
+        <button class="btnLogin-popup">Login</button>
+        {% endif %}
+
+    </nav>
+</div>
+
+<div class="cards">
+    <h1>Add post page</h1>
+    <form METHOD="POST" enctype='multipart/form-data'>
+        {% csrf_token %}
+        <select name="profile" id="">
+            {% for item in portfolios %}
+            <option value="{{ portfolio.id }}">Portfolio: {{ item.profile.user.first_name}} {{ item.profile.user.last_name}} ӏ {{item.title}}
+            </option>
+            {% endfor %}
+        </select>
+        <div class="form-group">
+            Title: {{ form.title }}
+            About me: {{ form.description }}
+            Portfolio image: {{ form.image }}
+        </div>
+        <button class="btn btn-secondary">Add portfolio</button>
+
+    </form>
+</div>
